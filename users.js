@@ -16,16 +16,21 @@ mongoose.connect(
 );
 
 //DB TABLE
-const categorySchema = new Schema({
+const userSchema = new Schema({
   name: String,
-  description: String,
+  surname: String,
+  email: String,
+  password: String,
+  addDate: String,
 });
 
-const Category = mongoose.model("Category", categorySchema);
+app.path("addDate") instanceof Date;
+
+const User = mongoose.model("User", userSchema);
 
 //GETALL
-app.get("/categories", (req, res) => {
-  Category.find({}, (err, docs) => {
+app.get("/users", (req, res) => {
+  User.find({}, (err, docs) => {
     if (!err) {
       res.json(docs);
     } else {
@@ -35,9 +40,9 @@ app.get("/categories", (req, res) => {
 });
 
 //GET id
-app.get("/categories/:id", (req, res) => {
+app.get("/users/:id", (req, res) => {
   let id = req.params.id;
-  Category.findById(id, (err, doc) => {
+  User.findById(id, (err, doc) => {
     if (!err) {
       if (doc) res.json(doc);
       else res.status(404).json({ message: "Not found!" });
@@ -48,28 +53,31 @@ app.get("/categories/:id", (req, res) => {
 });
 
 //Post
-app.post("/categories", (req, res) => {
+app.post("/users", (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  var category = new Category({
+  var category = new User({
     name: req.body.name,
-    description: req.body.description,
+    surname: req.body.surname,
+    email: req.body.email,
+    password: req.body.password,
+    addDate: req.body.addDate,
   });
   category.save();
   res.send("Success!!");
 });
 
 //Delete
-app.delete("/categories/:id", (req, res) => {
+app.delete("/users/:id", (req, res) => {
   let id = req.params.id;
-  Category.findByIdAndDelete(id, (err) => {
+  User.findByIdAndDelete(id, (err) => {
     if (!err) res.json({ messagae: "Success!" });
     else res.status(500).json(err);
   });
 });
 
-app.listen(3010, () => {
+app.listen(3020, () => {
   console.log("Server is running!!");
 });
