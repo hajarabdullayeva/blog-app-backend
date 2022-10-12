@@ -5,17 +5,18 @@ const mongoose = require("mongoose");
 require("dotenv").config({ path: "./.env" });
 //! Routes
 const newsRouter = require("./routes/newsRouter");
+const commentsRouter = require("./routes/commentRouter");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-require('./comments.js')(app);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 app.use("/news", newsRouter);
+app.use("/comments", commentsRouter);
 
 app.use((req, res) => {
   res.json({
