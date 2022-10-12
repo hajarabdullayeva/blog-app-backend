@@ -65,7 +65,7 @@ app.post("/categories", (req, res) => {
 app.delete("/categories/:id", (req, res) => {
   let id = req.params.id;
   Category.findByIdAndDelete(id, (err) => {
-    if (!err) res.json({ messagae: "Success!" });
+    if (!err) res.json({ message: "Success!" });
     else res.status(500).json(err);
   });
 });
