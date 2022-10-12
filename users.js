@@ -92,6 +92,12 @@ app.delete("/users/:id", (req, res) => {
     else res.status(500).json(err);
   });
 });
+// Update
+app.patch("/users/:id", async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findByIdAndUpdate(id, req.body);
+  res.status(200).json(user);
+});
 
 app.listen(3020, () => {
   console.log("Server is running!!");
