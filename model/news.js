@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const newsSchema = new Schema({
   title: {
     type: String,
+    trim: true,
     require: [true, "Title must be defined"],
     unique: true,
   },
