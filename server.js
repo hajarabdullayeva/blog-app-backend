@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require('passport');
+const googleAuthRouter = require('./routes/googleAuthRouter');
 
 require("dotenv").config({ path: "./.env" });
 
@@ -21,6 +22,13 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
+require('./auth/auth');
+
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', googleAuthRouter)
 app.use("/news", newsRouter);
 app.use("/comments", commentsRouter);
 app.use('/categories', categoryRouter)
@@ -32,40 +40,6 @@ app.use((req, res) => {
     message: `${req.originalUrl} does not exist`,
   });
 });
-
-require('./auth/auth');
-
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-// app.get('/test', (req, res) => {
-//   res.send('<a href="/auth/google">Authenticate with Google</a>');
-// });
-
-// app.get('/protected', isLoggedIn, (req, res) => {
-//   res.send(`Hello ${req.user.displayName}`);
-// });
-
-// app.get('/auth/google',
-//   passport.authenticate('google', { scope: ['email', 'profile'] }
-//   ));
-// app.get('/auth/google/callback',
-//   passport.authenticate('google', {
-//     successRedirect: '/protected',
-//     failureRedirect: '/auth/google/failure'
-//   })
-// );
-
-// app.get('/logout', (req, res) => {
-//   req.logout();
-//   req.session.destroy();
-//   res.send('Goodbye!');
-// });
-
-// app.get('/auth/google/failure', (req, res) => {
-//   res.send('Failed to authenticate..');
-// });
 
 // Start application
 const DB = process.env.DB_STRING.replace("<password>", process.env.DB_PASSWORD);
