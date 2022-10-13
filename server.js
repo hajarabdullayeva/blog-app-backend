@@ -33,15 +33,11 @@ app.use((req, res) => {
   });
 });
 
-// require('./auth/auth');
+require('./auth/auth');
 
-// function isLoggedIn(req, res, next) {
-//   req.user ? next() : res.sendStatus(401);
-// }
-
-// app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // app.get('/test', (req, res) => {
 //   res.send('<a href="/auth/google">Authenticate with Google</a>');
@@ -54,7 +50,6 @@ app.use((req, res) => {
 // app.get('/auth/google',
 //   passport.authenticate('google', { scope: ['email', 'profile'] }
 //   ));
-
 // app.get('/auth/google/callback',
 //   passport.authenticate('google', {
 //     successRedirect: '/protected',

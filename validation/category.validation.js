@@ -1,4 +1,4 @@
-const { body, ValidationResult, validationResult } = require("express-validator")
+const { body, validationResult } = require("express-validator")
 
 const categoryValidation = [
     body("name").notEmpty().withMessage("Name field required !"),
@@ -7,7 +7,7 @@ const categoryValidation = [
         const errors = validationResult(req)
 
         if (errors.isEmpty()) {
-            res.status(422).json({ "message": errors.array()[0].msg })
+            res.status(422).json({ "message": errors })
         }
         next()
     }

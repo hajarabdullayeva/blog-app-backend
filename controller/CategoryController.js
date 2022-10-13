@@ -1,7 +1,7 @@
 const Category = require("../model/Category");
 const bodyParser = require("body-parser");
 const express = require("express");
-const { body, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,7 +13,8 @@ module.exports = {
             Category.find({}, (err, docs) => {
                 if (!err) {
                     res.json(docs);
-                } else {
+                }
+                else {
                     res.status(500).json(err);
                 }
             });
@@ -47,6 +48,7 @@ module.exports = {
     addCategory: async function (req, res) {
         try {
             const errors = validationResult(req);
+
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array() });
             }
@@ -55,7 +57,6 @@ module.exports = {
                 description: req.body.description,
             });
             category.save();
-            res.send("Success!!");
         } catch (error) {
             res.json({
                 success: false,
