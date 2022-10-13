@@ -3,6 +3,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./.env" });
+const session = require('express-session');
+const passport = require('passport');
+
 //! Routes
 const newsRouter = require("./routes/newsRouter");
 const commentsRouter = require("./routes/commentRouter");
@@ -10,6 +13,8 @@ const commentsRouter = require("./routes/commentRouter");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+require('./auth/auth');
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -23,6 +28,43 @@ app.use((req, res) => {
     success: false,
     message: `${req.originalUrl} does not exist`,
   });
+});
+
+function isLoggedIn(req, res, next) {
+  req.user ? next() : res.sendStatus(401);
+}
+
+app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/test', (req, res) => {
+  res.send('<a href="/auth/google">Authenticate with Google</a>');
+});
+
+app.get('/protected', isLoggedIn, (req, res) => {
+  res.send(`Hello ${req.user.displayName}`);
+});
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] }
+  ));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/protected',
+    failureRedirect: '/auth/google/failure'
+  })
+);
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('Goodbye!');
+});
+
+app.get('/auth/google/failure', (req, res) => {
+  res.send('Failed to authenticate..');
 });
 
 //! Start application
