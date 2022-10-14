@@ -10,10 +10,16 @@ const PostSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    photo: {
-      type: String,
-      required: false
-    },
+    photo: [
+      {
+        type: String,
+        isPoster: {
+          type: Boolean,
+          default: false,
+        },
+        src: String,
+      },
+    ],
     username: {
       type: String,
       required: true
