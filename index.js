@@ -2,12 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const multer = require("multer")
 const registerRoute = require("./routes/register");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
+const commentRouter = require("./routes/commentRouter");
 
 dotenv.config();
 const app = express();
@@ -21,6 +21,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+app.use('/api/comments', commentRouter);
 
 //! Start application
 const DB = process.env.DB_STRING.replace("<password>", process.env.DB_PASSWORD);
