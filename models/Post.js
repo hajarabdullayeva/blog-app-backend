@@ -10,7 +10,7 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  photo: [
+  photo: 
     {
       type: String,
       isPoster: {
@@ -19,7 +19,6 @@ const PostSchema = new mongoose.Schema({
       },
       src: String,
     },
-  ],
   username: {
     type: String,
     required: true

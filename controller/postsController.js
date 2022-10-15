@@ -94,7 +94,7 @@ module.exports = {
             });
         }
     },
-    getPostById: async function async() {
+    getPostById: async function async(req,res) {
         try {
             const post = await Post.findById(req.params.id);
             res.status(200).json(
@@ -111,7 +111,7 @@ module.exports = {
             );
         }
     },
-    getAllPosts: async function async() {
+    getAllPosts: async function async(req, res) {
         const username = req.query.user;
         const catName = req.query.cat;
         try {
