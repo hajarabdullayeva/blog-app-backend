@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 
 module.exports = {
     addPost: async function async(req, res) {
+        console.log(req.body)
         console.log(req.file)
         const newPost = new Post(req.body);
         const imgPath = req.file.path.slice(6, req.file.path.length)
